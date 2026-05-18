@@ -11,12 +11,12 @@ export default function MarcatempoPage() {
   const [toast, setToast] = useState<string | null>(null);
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(null), 2200); };
 
-  const { data: configData } = useSWR('/api/config', fetcher);
+  const { data: configData, error: configError } = useSWR('/api/config', fetcher);
   
   // Per SWR, passiamo array di argomenti o una singola stringa.
   // Vogliamo le presenze di oggi.
   const today = todayStr();
-  const { data: presenzeData, mutate } = useSWR(`/api/presenze?from=${today}&to=${today}`, fetcher);
+  const { data: presenzeData, error: presenzeError, mutate } = useSWR(`/api/presenze?from=${today}&to=${today}`, fetcher);
 
   const [editTime, setEditTime] = useState<string | null>(null);
   const [editVal, setEditVal] = useState("");
@@ -88,7 +88,9 @@ export default function MarcatempoPage() {
     showToast("Orario aggiornato");
   };
 
-  if (!configData || !presenzeData) return <div>Caricamento...</div>;
+  if (configError) return <div style={{ padding: 20, color: 'red' }}>Errore configurazione: {String(configError.message)}</div>;
+  if (presenzeError) return <div style={{ padding: 20, color: 'red' }}>Errore presenze: {String(presenzeError.message)}</div>;
+  if (!configData || !presenzeData) return <div style={{ padding: 20, color: 'var(--muted)' }}>Caricamento in corso...</div>;
 
   // convert ISO back to ms for UI
   const entrataMs = g.entrata ? new Date(g.entrata).getTime() : null;
