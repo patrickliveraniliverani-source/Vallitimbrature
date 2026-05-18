@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import { fetcher, apiRequest } from '@/lib/fetcher';
 import { Chip } from '@/components/ui/Chip';
@@ -21,6 +21,13 @@ export default function MarcatempoPage() {
   const [editTime, setEditTime] = useState<string | null>(null);
   const [editVal, setEditVal] = useState("");
   const [showCambioSede, setShowCambioSede] = useState(false);
+  const [editSedeIndex, setEditSedeIndex] = useState<number | null>(null);
+
+  const [nowTs, setNowTs] = useState(Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => setNowTs(Date.now()), 30000); // 30s live tick
+    return () => clearInterval(timer);
+  }, []);
   
   // Default config
   const config = configData || { sedi: [] };
@@ -67,8 +74,22 @@ export default function MarcatempoPage() {
     return ids.map((id:any) => config.sedi.find((s:any) => s.id === id)?.label || id).join(", ");
   };
 
-  const pauseTot = () => (g.pause || []).reduce((a:number, p:any) => a + (p.fine && p.inizio ? (p.fine - p.inizio) / 60000 : 0), 0);
-  const netH = netMins(g);
+  const pauseTot = () => (g.pause || []).reduce((a:number, p:any) => {
+    const pI = p.inizio ? new Date(p.inizio).getTime() : 0;
+    const pF = p.fine ? new Date(p.fine).getTime() : nowTs;
+    if (pI) return a + ((pF - pI) / 60000);
+    return a;
+  }, 0);
+  const netH = netMins(g, nowTs);
+
+  const saveSedeEdit = async (i: number, newSedeId: string) => {
+    const sessioni = [...(g.sessioni || [])];
+    sessioni[i].sede = newSedeId;
+    const isLast = i === sessioni.length - 1;
+    await upd({ sessioni, ...(isLast ? { sede_corrente: newSedeId } : {}) });
+    setEditSedeIndex(null);
+    showToast("Sede aggiornata");
+  };
 
   const startEdit = (campo: string, val: any) => {
     // Parse Date. Se val è ISO o ms funziona uguale (se usiamo new Date()).
@@ -184,12 +205,21 @@ export default function MarcatempoPage() {
         </div>
       </div>
 
-      {(g.sessioni || []).length > 1 && (
+      {(g.sessioni || []).length > 0 && (
         <div className="card" style={{ marginTop: 10, fontSize: 13 }}>
           <div style={{ color: "var(--muted)", fontSize: 12, marginBottom: 8 }}>Sessioni della giornata</div>
           {(g.sessioni || []).map((s:any, i:number) => (
-            <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: i < (g.sessioni || []).length - 1 ? "1px solid var(--border)" : "none" }}>
-              <span>{config.sedi.find((x:any) => x.id === s.sede)?.label || s.sede}</span>
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: i < (g.sessioni || []).length - 1 ? "1px solid var(--border)" : "none" }}>
+              {editSedeIndex === i ? (
+                 <select value={s.sede} onChange={(e) => saveSedeEdit(i, e.target.value)} style={{ padding: "4px", fontSize: 13, flex: 1, marginRight: 8, height: "30px", borderRadius: "6px", border: "1px solid var(--accent)" }}>
+                    {config.sedi.map((sx:any) => <option key={sx.id} value={sx.id}>{sx.label}</option>)}
+                 </select>
+              ) : (
+                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ fontWeight: 500 }}>{config.sedi.find((x:any) => x.id === s.sede)?.label || s.sede}</span>
+                    <button onClick={() => setEditSedeIndex(i)} className="btn-ghost" style={{ padding: "2px 6px", fontSize: 11, border: "none" }}>✎</button>
+                 </div>
+              )}
               <span className="mono">{fmtTime(s.inizio)} → {s.fine ? fmtTime(s.fine) : "in corso"}</span>
             </div>
           ))}

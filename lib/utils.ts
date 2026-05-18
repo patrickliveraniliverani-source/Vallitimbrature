@@ -29,17 +29,17 @@ export function minsToHHMM(mins: number | null | undefined) {
   return `${h}h ${m.toString().padStart(2, "0")}m`;
 }
 
-export function netMins(g: any) {
-  if (!g || !g.entrata || !g.uscita) return 0;
+export function netMins(g: any, liveTs?: number) {
+  if (!g || !g.entrata) return 0;
   
   const e = new Date(g.entrata).getTime();
-  const u = new Date(g.uscita).getTime();
+  const u = g.uscita ? new Date(g.uscita).getTime() : (liveTs || e);
   const tot = (u - e) / 60000;
   
   const pause = (g.pause || []).reduce((a: number, p: any) => {
-    if (p.inizio && p.fine) {
+    if (p.inizio) {
       const pI = new Date(p.inizio).getTime();
-      const pF = new Date(p.fine).getTime();
+      const pF = p.fine ? new Date(p.fine).getTime() : (liveTs || pI);
       return a + ((pF - pI) / 60000);
     }
     return a;
