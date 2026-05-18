@@ -98,9 +98,15 @@ export default function MarcatempoPage() {
 
   return (
     <div>
-      <h2 style={{ fontFamily: "var(--font-serif)", fontSize: 20, marginBottom: 16, color: "var(--text)" }}>
-        {fmtDate(Date.now())} — {stato === "fuori" ? "Non in servizio" : stato === "in_servizio" ? "In servizio" : stato === "pausa" ? "In pausa" : "Uscito"}
-      </h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <h2 style={{ fontFamily: "var(--font-serif)", fontSize: 20, color: "var(--text)", margin: 0 }}>
+          {fmtDate(Date.now())} — {stato === "fuori" ? "Non in servizio" : stato === "in_servizio" ? "In servizio" : stato === "pausa" ? "In pausa" : "Uscito"}
+        </h2>
+        <button className="btn-secondary" onClick={() => mutate()} style={{ padding: '6px 12px', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21v-5h5"/></svg>
+          Aggiorna
+        </button>
+      </div>
 
       {entrataMs && (
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8, padding: "10px 14px" }}>
