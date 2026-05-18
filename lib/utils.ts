@@ -31,7 +31,19 @@ export function minsToHHMM(mins: number | null | undefined) {
 
 export function netMins(g: any) {
   if (!g || !g.entrata || !g.uscita) return 0;
-  const tot = (g.uscita - g.entrata) / 60000;
-  const pause = (g.pause || []).reduce((a: number, p: any) => a + (p.fine && p.inizio ? (p.fine - p.inizio) / 60000 : 0), 0);
+  
+  const e = new Date(g.entrata).getTime();
+  const u = new Date(g.uscita).getTime();
+  const tot = (u - e) / 60000;
+  
+  const pause = (g.pause || []).reduce((a: number, p: any) => {
+    if (p.inizio && p.fine) {
+      const pI = new Date(p.inizio).getTime();
+      const pF = new Date(p.fine).getTime();
+      return a + ((pF - pI) / 60000);
+    }
+    return a;
+  }, 0);
+  
   return Math.max(0, tot - pause);
 }
