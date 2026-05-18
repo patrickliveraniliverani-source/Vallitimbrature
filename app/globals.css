@@ -1,139 +1,171 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f5f2eb;
-  --card: #ffffff;
-  --border: rgba(0, 0, 0, 0.06);
-  --text: #1c1c1c;
-  --muted: #6b6560;
-  --accent: #b8451f;
-  --accent-light: #f9ece7;
-  --chip: #eae7e0;
-  --chip-active: #b8451f;
+  /* iOS 26 Color System */
+  --bg: #f2f2f7;
+  --bg2: #ffffff;
+  --card: rgba(255, 255, 255, 0.85);
+  --card-solid: #ffffff;
+  --border: rgba(60, 60, 67, 0.12);
+  --text: #000000;
+  --text-secondary: rgba(60, 60, 67, 0.6);
+  --muted: rgba(60, 60, 67, 0.45);
+  --accent: #c0410f;
+  --accent-light: rgba(192, 65, 15, 0.10);
+  --accent-glass: rgba(192, 65, 15, 0.15);
+  --chip: rgba(118, 118, 128, 0.12);
+  --chip-active: #c0410f;
   --chip-active-text: #ffffff;
+
+  /* iOS 26 Type Scale (SF Pro style) */
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 17px;        /* iOS body */
+  --text-lg: 20px;          /* iOS callout */
+  --text-xl: 22px;          /* iOS title 3 */
+  --text-2xl: 28px;         /* iOS title 2 */
+  --text-3xl: 34px;         /* iOS large title */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 800;
 }
 
+/* ── Base ─────────────────────────────────────────── */
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
 }
 
-* {
-  box-sizing: border-box;
+* { box-sizing: border-box; }
+
+/* ── iOS Monospace (like SF Mono) ─────────────────── */
+.mono {
+  font-family: var(--font-mono), 'SF Mono', 'Menlo', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
-/* Apple style smooth inputs */
-input, textarea {
-  background: var(--card);
+/* ── iOS Style Inputs ─────────────────────────────── */
+input, textarea, select {
+  background: var(--card-solid);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 14px;
+  border-radius: 12px;
+  padding: 12px 16px;
   font-family: inherit;
-  font-size: 15px;
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
   color: var(--text);
   width: 100%;
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  -webkit-appearance: none;
 }
-
-input:focus, textarea:focus {
+input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 4px var(--accent-light);
 }
 
-.mono {
-  font-family: var(--font-mono), monospace;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Apple style Tabs */
+/* ── Tab Bar (iOS style) ──────────────────────────── */
 .tab-btn {
-  padding: 10px 18px;
+  padding: 12px 16px;
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 15px;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
   font-family: inherit;
   color: var(--muted);
   border-bottom: 2px solid transparent;
-  transition: all .2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
-
 .tab-btn.active {
   color: var(--accent);
-  border-bottom: 2px solid var(--accent);
-  font-weight: 600;
+  border-bottom: 2.5px solid var(--accent);
+  font-weight: var(--weight-semibold);
 }
 
-/* Apple style Cards with soft shadows */
+/* ── Cards — Liquid Glass ────────────────────────── */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.04);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06),
+              0 1px 4px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Primary Button with iOS spring effect */
+/* ── Primary Button — iOS filled ─────────────────── */
 .btn-primary {
   background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 12px;
-  padding: 14px 24px;
-  font-size: 16px;
+  border-radius: 14px;
+  padding: 15px 24px;
+  font-size: var(--text-base);
   font-family: inherit;
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
   cursor: pointer;
-  font-weight: 600;
-  box-shadow: 0 4px 14px 0 rgba(184, 69, 31, 0.39);
-  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(192, 65, 15, 0.32);
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.18s ease;
 }
 .btn-primary:active {
-  transform: scale(0.96);
-  box-shadow: 0 2px 8px 0 rgba(184, 69, 31, 0.39);
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(192, 65, 15, 0.25);
 }
 
-/* Secondary Buttons */
+/* ── Secondary Button — iOS tinted ───────────────── */
 .btn-secondary {
-  background: var(--card);
+  background: var(--chip);
   color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 16px;
-  font-size: 14px;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: var(--text-sm);
   font-family: inherit;
+  font-weight: var(--weight-medium);
   cursor: pointer;
-  font-weight: 500;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-  transition: all 0.2s ease;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.18s ease;
 }
 .btn-secondary:active {
-  transform: scale(0.96);
-  background: var(--chip);
+  transform: scale(0.95);
+  background: rgba(118, 118, 128, 0.22);
 }
 
-/* Ghost Buttons */
+/* ── Ghost Button — iOS tinted text ──────────────── */
 .btn-ghost {
-  background: transparent;
+  background: var(--accent-light);
   color: var(--accent);
   border: none;
   border-radius: 10px;
   padding: 8px 14px;
-  font-size: 14px;
+  font-size: var(--text-sm);
   font-family: inherit;
+  font-weight: var(--weight-semibold);
   cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-.btn-ghost:hover {
-  background: var(--accent-light);
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.18s ease;
 }
 .btn-ghost:active {
-  transform: scale(0.96);
+  transform: scale(0.95);
+  background: rgba(192, 65, 15, 0.2);
 }
+
+
+
