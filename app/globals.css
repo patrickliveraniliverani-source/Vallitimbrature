@@ -3,7 +3,7 @@
 :root {
   --bg: #f5f2eb;
   --card: #ffffff;
-  --border: #e0dccf;
+  --border: rgba(0, 0, 0, 0.06);
   --text: #1c1c1c;
   --muted: #6b6560;
   --accent: #b8451f;
@@ -16,29 +16,34 @@
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, sans-serif;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* Apple style smooth inputs */
 input, textarea {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 7px 10px;
-  font-family: var(--font-sans), sans-serif;
-  font-size: 14px;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 15px;
   color: var(--text);
   width: 100%;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
 input:focus, textarea:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-  border-color: transparent;
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-light);
 }
 
 .mono {
@@ -46,61 +51,89 @@ input:focus, textarea:focus {
   font-variant-numeric: tabular-nums;
 }
 
+/* Apple style Tabs */
 .tab-btn {
-  padding: 8px 18px;
+  padding: 10px 18px;
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 14px;
-  font-family: var(--font-sans), sans-serif;
+  font-size: 15px;
+  font-family: inherit;
   color: var(--muted);
   border-bottom: 2px solid transparent;
-  transition: all .15s;
+  transition: all .2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .tab-btn.active {
   color: var(--accent);
   border-bottom: 2px solid var(--accent);
-  font-weight: 500;
+  font-weight: 600;
 }
 
+/* Apple style Cards with soft shadows */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Primary Button with iOS spring effect */
 .btn-primary {
   background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 12px 20px;
-  font-size: 15px;
-  font-family: var(--font-sans), sans-serif;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-family: inherit;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  box-shadow: 0 4px 14px 0 rgba(184, 69, 31, 0.39);
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s ease;
+}
+.btn-primary:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 8px 0 rgba(184, 69, 31, 0.39);
 }
 
+/* Secondary Buttons */
 .btn-secondary {
-  background: var(--chip);
+  background: var(--card);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 9px 16px;
-  font-size: 13px;
-  font-family: var(--font-sans), sans-serif;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: inherit;
   cursor: pointer;
+  font-weight: 500;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  transition: all 0.2s ease;
+}
+.btn-secondary:active {
+  transform: scale(0.96);
+  background: var(--chip);
 }
 
+/* Ghost Buttons */
 .btn-ghost {
   background: transparent;
   color: var(--accent);
-  border: 1px solid var(--accent);
-  border-radius: 8px;
+  border: none;
+  border-radius: 10px;
   padding: 8px 14px;
-  font-size: 13px;
-  font-family: var(--font-sans), sans-serif;
+  font-size: 14px;
+  font-family: inherit;
   cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.btn-ghost:hover {
+  background: var(--accent-light);
+}
+.btn-ghost:active {
+  transform: scale(0.96);
 }

@@ -55,8 +55,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div style={{ fontFamily: 'var(--font-sans), sans-serif', background: 'var(--bg)', minHeight: '100vh', color: 'var(--text)' }}>
-      <header style={{ background: 'var(--card)', borderBottom: '1px solid var(--border)', padding: '0 16px' }}>
+    <div style={{ fontFamily: 'var(--font-sans), -apple-system, BlinkMacSystemFont, sans-serif', background: 'var(--bg)', minHeight: '100vh', color: 'var(--text)' }}>
+      <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'saturate(180%) blur(20px)', WebkitBackdropFilter: 'saturate(180%) blur(20px)', borderBottom: '1px solid rgba(0,0,0,0.06)', padding: '0 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingTop: 14, paddingBottom: 2, justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontFamily: 'var(--font-serif), serif', fontSize: 17, fontWeight: 600, color: 'var(--accent)' }}>Rendiconto IT</span>
