@@ -133,9 +133,16 @@ export default function MarcatempoPage() {
         <BigBtn label="Uscita" onClick={() => timbra("uscita")} />
       </>}
       {stato === "pausa" && <BigBtn label="Fine pausa pranzo" onClick={() => timbra("fine_pausa")} />}
-      {stato === "uscito" && <div style={{ background: "var(--accent-light)", border: "1px solid var(--accent)", borderRadius: 10, padding: 14, marginBottom: 12, fontSize: 14, color: "var(--accent)", fontWeight: 500 }}>
-        Giornata conclusa — {minsToHHMM(netH)} nette
-      </div>}
+      {stato === "uscito" && (
+        <>
+          <div style={{ background: "var(--accent-light)", border: "1px solid var(--accent)", borderRadius: 10, padding: 14, marginBottom: 12, fontSize: 14, color: "var(--accent)", fontWeight: 500 }}>
+            Giornata conclusa — {minsToHHMM(netH)} nette
+          </div>
+          <button onClick={() => upd({ uscita: null })} className="btn-ghost" style={{ width: "100%", padding: "12px", fontSize: 14, marginBottom: 16 }}>
+            🔙 Riprendi turno (annulla uscita)
+          </button>
+        </>
+      )}
 
       {showCambioSede && (
         <div className="card" style={{ marginBottom: 12 }}>
